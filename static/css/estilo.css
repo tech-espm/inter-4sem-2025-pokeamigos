@@ -2,9 +2,12 @@ img {
 	max-width: 100%;
 }
 
-html, body {
+html,
+body {
 	/* Para fazer o rodapé ficar sempre na parte inferior da página ;) */
 	min-height: 100vh;
+	margin: 0px;
+	background-color: #f0f0f0;
 }
 
 .limitador {
@@ -29,7 +32,12 @@ html, body {
 	padding: 2rem;
 }
 
-.link-rodape, .link-rodape:hover {
+.link-rodape,
+.link-rodape:hover {
 	color: white;
 	text-decoration: none;
+}
+
+.centralizar {
+	text-align: center;
 }

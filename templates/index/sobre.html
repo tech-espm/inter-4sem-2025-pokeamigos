@@ -1,17 +1,605 @@
-{% extends 'layout.html' %}
+{% extends 'layout.html' %} {% block body %}
 
-{% block body %}
+<link
+  href="https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+  .banner {
+    font-family: "Jaro", sans-serif;
+    font-size: 50px;
+    font-weight: 900;
+    color: #ffffff;
+    margin: 0;
+    -webkit-text-stroke: 3px #000000;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  ::selection {
+    color: #000000;
+  }
+
+  #wrapper #content-wrapper {
+    background: none;
+  }
+
+  .rodape {
+    text-align: center;
+    background-color: black;
+    padding: 2rem;
+  }
+
+  .link-rodape,
+  .link-rodape:hover {
+    text-decoration: none;
+  }
+
+  .fundo-cinza-padding {
+    padding: 30px 70px;
+  }
+
+  .fundo-branco-borda-arredondada {
+    border-radius: 5px;
+  }
+
+  .margin-row-interna {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  .formatacao-texto-sobre {
+    text-align: justify;
+    font-size: 18px;
+  }
+
+  .fundo-cinza-card {
+    background-color: #e3e3e3;
+    border-radius: 5px;
+  }
+
+  .flex-space-between {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .padding-left-right-row-integrantes {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .margin-reduzida-row-integrantes {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  .centralizar {
+    text-align: center;
+  }
+
+  .flex-space-evenly {
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .margin-bottom-card {
+    margin-bottom: 20px;
+  }
+
+  .padding-reduzido {
+    padding: 5px;
+  }
+
+  .sidebar-light .nav-item .nav-link i {
+    color: #484a5e;
+  }
+
+  .sidebar-light .nav-item .nav-link:active i,
+  .sidebar-light .nav-item .nav-link:focus i,
+  .sidebar-light .nav-item .nav-link:hover i {
+    color: #686a86;
+  }
+
+  .sidebar-light .nav-item .nav-link {
+    color: #000;
+  }
+
+  .sidebar-light .nav-item .nav-link:active,
+  .sidebar-light .nav-item .nav-link:focus,
+  .sidebar-light .nav-item .nav-link:hover {
+    color: #3b3b3b;
+  }
+
+  .cor-ola-usuario {
+    color: white;
+  }
+
+  .cor-link-preto {
+    text-decoration: none;
+    color: #000;
+  }
+
+  .cor-link-preto:hover {
+    text-decoration: none;
+    color: #626262;
+  }
+
+  .tamanho-fonte-nomes {
+    font-size: 13px;
+    color: black;
+  }
+
+  .tamanho-fonte-redes {
+    font-size: 10px;
+    line-height: 0;
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .padding-left-icones-redes {
+    padding-left: 3px;
+  }
+
+  .tamanho-fonte-redes img {
+    width: 15px;
+  }
+
+  .padding-top-nomes {
+    padding-top: 6px;
+  }
+
+  .padding-top-listar {
+    padding-top: 32.5px;
+  }
+
+  .padding-top-redes {
+    padding-top: 8px;
+  }
+
+  @media (max-width: 1200px) {
+    .tamanho-fonte-nomes {
+      font-size: 10px;
+    }
+
+    .tamanho-fonte-redes {
+      font-size: 6px;
+      line-height: 0.2;
+    }
+
+    .padding-top-nomes {
+      padding-top: 0px;
+    }
+
+    .padding-top-redes {
+      padding-top: 0px;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .tamanho-fonte-nomes {
+      font-size: 25px;
+    }
+
+    .tamanho-fonte-redes {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .tamanho-fonte-redes img {
+      width: 20px;
+    }
+
+    .padding-top-nomes {
+      padding-top: 21px;
+    }
+
+    .padding-top-redes {
+      padding-top: 20px;
+    }
+  }
+
+  .flex-fotos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .foto-circular {
+    border-radius: 100%;
+  }
+
+  .centralizar-img-e-texto {
+    display: flex;
+    align-items: center;
+  }
+
+  td,
+  th {
+    max-width: 120px;
+  }
+
+  th {
+    max-width: 120px;
+    text-align: center;
+  }
+
+  td p {
+    margin: 5px 5px;
+    text-align: center;
+    max-width: 100px;
+  }
+
+  th,
+  td p {
+    font-size: 0.55vw;
+    margin: 3.1px;
+  }
+
+  table {
+    max-width: 500px;
+  }
+
+  th,
+  td {
+    width: 70px;
+  }
+
+  .subtitulo {
+    font-size: 0.76rem;
+    font-weight: bold;
+    color: #666666;
+    text-align: center;
+    margin-bottom: 17px;
+    padding-top: 7px;
+    font-family: sans-serif;
+  }
+
+  .GdsNums {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2b2b2b;
+    text-align: center;
+  }
+
+  .paddinzinho {
+    padding-bottom: 41px;
+  }
+
+  .alinhaStart {
+    text-align: start;
+  }
+
+  form input {
+    margin-left: 7px;
+  }
+</style>
 
 <div class="container-fluid">
+  <div class="row">
+    <div class="container-fluid fundo-branco-borda-arredondada">
+      <div class="row margin-row-interna">
+        <div class="col-lg-6 pt-1">
+          <h1 class="banner">Sobre Nós</h1>
+          <p class="formatacao-texto-sobre pt-4">
+            Nós somos os Masked Penguins, um grupo de amigos e estudantes do 4º
+            semestre de Sistemas de Informação (ESPM). <br />
+            Cada projeto que fazemos é fruto do trabalho em conjunto, onde todos
+            participam, opinam e colocam a mão na massa. <br />
+            Acreditamos que isso deixa tudo mais alinhado com o que cada um tem
+            de melhor, e o resultado acaba sendo algo realmente sólido.
+            <br />
+            Mas nem só de código vive o grupo! Entre uma tarefa e outra, rolam
+            muitas risadas, histórias e boas memórias. Para nós, o mais
+            importante não é só a entrega final, e sim todo o caminho até lá.
+          </p>
+        </div>
+        <div class="col-lg-6 centralizar pt-3">
+          <img
+            src="/static/img/masked_penguins_v2.jpg"
+            alt="Integrantes do grupo Mercadinho"
+            width="600px"
+            class="fundo-branco-borda-arredondada"
+          />
+        </div>
+      </div>
+      <div
+        class="row margin-row-interna flex-space-between padding-left-right-row-integrantes margin-reduzida-row-integrantes"
+      >
+        <div
+          class="col-lg-3 fundo-cinza-card margin-bottom-card padding-reduzido"
+        >
+          <div class="container-fluid padding-reduzido">
+            <div class="row">
+              <div class="col-7 flex-fotos">
+                <img
+                  src="/static/img/alexandre.jpg"
+                  alt="Foto Alexandre Martinelli"
+                  width="200px"
+                  class="foto-circular"
+                />
+              </div>
+              <div class="col-5">
+                <p class="tamanho-fonte-nomes padding-top-nomes">
+                  <b>Alexandre <br />Martinelli</b>
+                </p>
+                <p
+                  class="tamanho-fonte-redes padding-top-redes centralizar-img-e-texto"
+                >
+                  <img
+                    src="/static/svg/linkedin.svg"
+                    alt="Ícone LinkedIn"
+                  /><span class="padding-left-icones-redes">
+                    <a
+                      href="https://www.linkedin.com/in/alexandre-martinelli-32871a314/"
+                      target="_blank"
+                      class="cor-link-preto"
+                      >LinkedIn</a
+                    ></span
+                  >
+                </p>
+                <p class="tamanho-fonte-redes centralizar-img-e-texto">
+                  <img src="/static/svg/github.svg" alt="Ícone GitHub" /><span
+                    class="padding-left-icones-redes"
+                  >
+                    <a
+                      href="https://github.com/alexandremartinelli11"
+                      target="_blank"
+                      class="cor-link-preto"
+                      >GitHub</a
+                    ></span
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 fundo-cinza-card margin-bottom-card padding-reduzido"
+        >
+          <div class="container-fluid padding-reduzido">
+            <div class="row">
+              <div class="col-7 flex-fotos">
+                <img
+                  src="/static/img/andre.png"
+                  alt="Foto André Pacheco"
+                  width="200px"
+                  class="foto-circular"
+                />
+              </div>
+              <div class="col-5">
+                <p class="tamanho-fonte-nomes padding-top-nomes">
+                  <b>André <br />Pacheco</b>
+                </p>
+                <p
+                  class="tamanho-fonte-redes padding-top-redes centralizar-img-e-texto"
+                >
+                  <img
+                    src="/static/svg/linkedin.svg"
+                    alt="Ícone LinkedIn"
+                  /><span class="padding-left-icones-redes"
+                    ><a
+                      href="https://www.linkedin.com/in/andre-alves777"
+                      target="_blank"
+                      class="cor-link-preto"
+                      >LinkedIn</a
+                    ></span
+                  >
+                </p>
+                <p class="tamanho-fonte-redes centralizar-img-e-texto">
+                  <img src="/static/svg/github.svg" alt="Ícone GitHub" /><span
+                    class="padding-left-icones-redes"
+                    ><a
+                      href="https://github.com/andre-alves77"
+                      target="_blank"
+                      class="cor-link-preto"
+                      >GitHub</a
+                    ></span
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 fundo-cinza-card margin-bottom-card padding-reduzido"
+        >
+          <div class="container-fluid padding-reduzido">
+            <div class="row">
+              <div class="col-7 flex-fotos">
+                <img
+                  src="/static/img/gabriel.png"
+                  alt="Foto Gabriel Cardoso"
+                  width="200px"
+                  class="foto-circular"
+                />
+              </div>
+              <div class="col-5">
+                <p class="tamanho-fonte-nomes padding-top-nomes">
+                  <b>Gabriel <br />Cardoso</b>
+                </p>
+                <p
+                  class="tamanho-fonte-redes padding-top-redes centralizar-img-e-texto"
+                >
+                  <img
+                    src="/static/svg/linkedin.svg"
+                    alt="Ícone LinkedIn"
+                  /><span class="padding-left-icones-redes"
+                    ><a
+                      href="https://www.linkedin.com/in/gabrielccr/"
+                      target="_blank"
+                      class="cor-link-preto"
+                      >LinkedIn</a
+                    ></span
+                  >
+                </p>
+                <p class="tamanho-fonte-redes centralizar-img-e-texto">
+                  <img src="/static/svg/github.svg" alt="Ícone GitHub" /><span
+                    class="padding-left-icones-redes"
+                    ><a
+                      href="https://github.com/gabrielccr-555"
+                      target="_blank"
+                      class="cor-link-preto"
+                      >GitHub</a
+                    ></span
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-	<h1>
-		Sobre
-	</h1>
+      <div
+        class="row margin-row-interna flex-space-between padding-left-right-row-integrantes margin-reduzida-row-integrantes"
+      >
+        <div
+          class="col-lg-3 fundo-cinza-card margin-bottom-card padding-reduzido"
+        >
+          <div class="container-fluid padding-reduzido">
+            <div class="row">
+              <div class="col-7 flex-fotos">
+                <img
+                  src="/static/img/hugo.jpg"
+                  alt="Foto Hugo Coscelli"
+                  width="200px"
+                  class="foto-circular"
+                />
+              </div>
+              <div class="col-5">
+                <p class="tamanho-fonte-nomes padding-top-nomes">
+                  <b>Hugo <br />Coscelli</b>
+                </p>
+                <p
+                  class="tamanho-fonte-redes padding-top-redes centralizar-img-e-texto"
+                >
+                  <img
+                    src="/static/svg/linkedin.svg"
+                    alt="Ícone LinkedIn"
+                  /><span class="padding-left-icones-redes">
+                    <a
+                      href="https://www.linkedin.com/in/hugo-ferraz/"
+                      target="_blank"
+                      class="cor-link-preto"
+                      >LinkedIn</a
+                    ></span
+                  >
+                </p>
+                <p class="tamanho-fonte-redes centralizar-img-e-texto">
+                  <img src="/static/svg/github.svg" alt="Ícone GitHub" /><span
+                    class="padding-left-icones-redes"
+                  >
+                    <a
+                      href="https://github.com/Z-Hugo-Ferraz"
+                      target="_blank"
+                      class="cor-link-preto"
+                      >GitHub</a
+                    ></span
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 fundo-cinza-card margin-bottom-card padding-reduzido"
+        >
+          <div class="container-fluid padding-reduzido">
+            <div class="row">
+              <div class="col-7 flex-fotos">
+                <img
+                  src="/static/img/akemi.jpg"
+                  alt="Foto Julia Akemi Mullis"
+                  width="200px"
+                  class="foto-circular"
+                />
+              </div>
+              <div class="col-5">
+                <p class="tamanho-fonte-nomes padding-top-nomes">
+                  <b>Julia <br />Mullis</b>
+                </p>
+                <p
+                  class="tamanho-fonte-redes padding-top-redes centralizar-img-e-texto"
+                >
+                  <img
+                    src="/static/svg/linkedin.svg"
+                    alt="Ícone LinkedIn"
+                  /><span class="padding-left-icones-redes"
+                    ><a
+                      href="https://www.linkedin.com/in/akemi-m/"
+                      target="_blank"
+                      class="cor-link-preto"
+                      >LinkedIn</a
+                    ></span
+                  >
+                </p>
+                <p class="tamanho-fonte-redes centralizar-img-e-texto">
+                  <img src="/static/svg/github.svg" alt="Ícone GitHub" /><span
+                    class="padding-left-icones-redes"
+                    ><a
+                      href="https://github.com/akemi-m"
+                      target="_blank"
+                      class="cor-link-preto"
+                      >GitHub</a
+                    ></span
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-lg-3 fundo-cinza-card margin-bottom-card padding-reduzido"
+        >
+          <div class="container-fluid padding-reduzido">
+            <div class="row">
+              <div class="col-7 flex-fotos">
+                <img
+                  src="/static/img/theo.png"
+                  alt="Foto Theo Gaspar"
+                  width="200px"
+                  class="foto-circular"
+                />
+              </div>
+              <div class="col-5">
+                <p class="tamanho-fonte-nomes padding-top-nomes">
+                  <b>Theo <br />Gaspar</b>
+                </p>
+                <p
+                  class="tamanho-fonte-redes padding-top-redes centralizar-img-e-texto"
+                >
+                  <img
+                    src="/static/svg/linkedin.svg"
+                    alt="Ícone LinkedIn"
+                  /><span class="padding-left-icones-redes"
+                    ><a
+                      href="https://www.linkedin.com/in/theo-gaspar/"
+                      target="_blank"
+                      class="cor-link-preto"
+                      >LinkedIn</a
+                    ></span
+                  >
+                </p>
+                <p class="tamanho-fonte-redes centralizar-img-e-texto">
+                  <img src="/static/svg/github.svg" alt="Ícone GitHub" /><span
+                    class="padding-left-icones-redes"
+                    ><a
+                      href="https://github.com/tigasparzin"
+                      target="_blank"
+                      class="cor-link-preto"
+                      >GitHub</a
+                    ></span
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-	<p>
-		Sobre nós! 😊
-	</p>
-
+  {% endblock %}
 </div>
-
-{% endblock %}
