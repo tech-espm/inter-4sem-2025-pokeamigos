@@ -13,6 +13,27 @@ def index():
 def sobre():
     return render_template('index/sobre.html', titulo='Sobre Nós')
 
+
+# adicionar a queryString com o id ou nome
+@app.get('/carta')
+def carta():
+    return render_template('index/sobre.html', titulo='Carta')
+
+@app.get('/colecoes')
+def colecoes():
+    return render_template('index/colecoes.html', titulo='Coleções')
+
+@app.get('/desejos')
+def desejos():
+    return render_template('index/desejos.html', titulo='Desejos')
+
+
+@app.get('/meu-album')
+def meu_album():
+    return render_template('index/meu-album.html', titulo='Meu Álbum')
+
+
+
 @app.get('/obterDados')
 def obterDados():
     dados = [
