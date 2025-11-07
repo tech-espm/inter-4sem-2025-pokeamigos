@@ -1,9 +1,6 @@
 {% extends 'layout.html' %} {% block body %}
 
-<link
-  href="https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&display=swap"
-  rel="stylesheet"
-/>
+
 
 <style>
   .banner {
@@ -42,10 +39,9 @@
   }
 </style>
 
-<div class="container-fluid">
-  <div class="banner">
-    <h1>POKEAMIGOS</h1>
-  </div>
+<div class="container-fluid px-0">
+
+
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3 my-3 pt-3">
     <div class="col">
       <img
@@ -76,8 +72,12 @@
       />
     </div>
   </div>
-  <h2 class="h2-fonte">Pokémons em destaque</h2>
   <div class="row">
+    <div class="col-12">
+      <h2 class="h2-fonte">Pokémons em destaque</h2>
+    </div>
+  </div>
+  <dxiv class="row">
     <div class="col-sm-2">
       <img src="/static/img/pokedest 3.png" alt="" />
     </div>
@@ -107,123 +107,55 @@
 <script type="text/javascript">
   "use strict";
 
-  $("#form").validate({
-    rules: {
-      data: {
-        required: true,
-      },
-    },
-    submitHandler: function () {
-      atualizarDados();
-    },
+document.addEventListener("DOMContentLoaded", () => {
+  const items = document.querySelectorAll(".nav-item-custom");
+  const circle = document.querySelector(".circle-indicator");
+  const currentPath = window.location.pathname.split("/").pop();
+
+  // Identifica o item ativo pela URL atual
+  let activeItem = Array.from(items).find(item => 
+    item.dataset.href === currentPath
+  ) || items[0];
+
+  // Posiciona o círculo sob o item ativo
+  const setCirclePosition = (el) => {
+    const rect = el.getBoundingClientRect();
+    const navRect = el.parentElement.getBoundingClientRect();
+    const leftPos = rect.left - navRect.left + rect.width / 2 - 8; // centraliza o círculo
+    circle.style.left = `${leftPos}px`;
+  };
+
+  setCirclePosition(activeItem);
+  activeItem.classList.add("active");
+
+  // Clique nos itens
+  items.forEach(item => {
+    item.addEventListener("click", () => {
+      if (item === activeItem) return;
+
+      // Anima ícones
+      activeItem.classList.remove("active");
+      item.classList.add("active");
+
+      // Move o círculo
+      setCirclePosition(item);
+
+      // Redireciona após a animação
+      setTimeout(() => {
+        window.location.href = item.dataset.href;
+      }, 600); // tempo igual ao transition do círculo
+    });
   });
 
-  async function atualizarDados() {
-    waitSwal();
+  // Ajusta o círculo se redimensionar a tela
+  window.addEventListener("resize", () => setCirclePosition(activeItem));
+});
 
-    try {
-      let response = await fetch("/obterDados");
 
-      if (response.ok) {
-        Swal.close();
 
-        let div = document.getElementById("div-grafico");
-        div.innerHTML =
-          '<canvas id="grafico-barras" style="height: 50vh;"></canvas>';
 
-        let labels = [],
-          data = [];
 
-        let dados = await response.json();
-        if (!dados || !dados.length) {
-          Swal.fire("Erro", "Sem dados na data especificada!", "error");
-          return;
-        }
-
-        for (let i = 0; i < dados.length; i++) {
-          labels.push(dados[i].dia);
-          data.push(dados[i].valor);
-        }
-
-        let grafico = new Chart(document.getElementById("grafico-barras"), {
-          type: "bar",
-          data: {
-            labels: labels,
-            datasets: [
-              {
-                label: "Valor",
-                backgroundColor: "#4e73df",
-                hoverBackgroundColor: "#2e59d9",
-                borderColor: "#4e73df",
-                data: data,
-              },
-            ],
-          },
-          options: {
-            maintainAspectRatio: false,
-            layout: {
-              padding: {
-                left: 10,
-                right: 25,
-                top: 25,
-                bottom: 0,
-              },
-            },
-            scales: {
-              x: {
-                gridLines: {
-                  display: false,
-                  drawBorder: false,
-                },
-                ticks: {
-                  maxTicksLimit: 10,
-                },
-                maxBarThickness: 25,
-              },
-              y: {
-                //display: false,
-                ticks: {
-                  min: 0,
-                  max: 10,
-                  maxTicksLimit: 10,
-                  padding: 10,
-                },
-                gridLines: {
-                  color: "rgb(234, 236, 244)",
-                  zeroLineColor: "rgb(234, 236, 244)",
-                  drawBorder: false,
-                  borderDash: [2],
-                  zeroLineBorderDash: [2],
-                },
-              },
-            },
-            legend: {
-              display: false,
-            },
-            tooltips: {
-              titleMarginBottom: 10,
-              titleFontColor: "#6e707e",
-              titleFontSize: 14,
-              backgroundColor: "rgb(255,255,255)",
-              bodyFontColor: "#858796",
-              borderColor: "#dddfeb",
-              borderWidth: 1,
-              xPadding: 15,
-              yPadding: 15,
-              displayColors: false,
-              caretPadding: 10,
-            },
-          },
-        });
-      } else {
-        await exibirErro(response);
-      }
-    } catch (ex) {
-      Swal.fire("Erro", "Erro ao listar os dados: " + ex.message, "error");
-    }
-  }
-
-  atualizarDados();
 </script>
 
 {% endblock %}
+

@@ -3,7 +3,17 @@
 {% block body %}
 
 <div class="container-fluid">
-
+    <div class="row">
+        {% for item in range(10) %}
+        <div class="col-lg-3 col-md-4 col-sm-6 p-4 text-center">    
+            <div>
+                <a href="/carta">
+                    <img src="/static/img/cartas/bulba.png" alt="" >
+                </a>
+            </div>
+        </div>
+            {% endfor %}
+    </div>
 </div>
 
 {% endblock %}

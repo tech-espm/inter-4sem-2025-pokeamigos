@@ -17,7 +17,7 @@ def sobre():
 # adicionar a queryString com o id ou nome
 @app.get('/carta')
 def carta():
-    return render_template('index/sobre.html', titulo='Carta')
+    return render_template('index/carta.html', titulo='Carta')
 
 @app.get('/colecoes')
 def colecoes():
