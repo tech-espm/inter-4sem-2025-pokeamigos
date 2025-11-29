@@ -184,7 +184,7 @@ def CartaCaraElm(elemento):
    group by CrdNm
    HAVING Elm LIKE :elemento
    order by valor desc
-   limit 5;''', {"elemento" : elemento}))
+   limit 5;'''), {"elemento" : elemento})
 			lista = []
 			for i in registro:
 				a = {
@@ -257,7 +257,8 @@ def ArtistaMaisPika():
     inner join Carta c on a.CrdId = c.CrdId
     inner join Artista art on art.ArtId = c.ArtId
     group by ArtNm
-    order by ValorTotal desc;
+    order by ValorTotal desc
+    limit 10;
 '''))
 			lista = []
 			for i in registro:

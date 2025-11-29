@@ -52,7 +52,7 @@ def obterDados():
         { 'dia': '17/09', 'valor': 78 },
         { 'dia': '18/09', 'valor': 93 },
         { 'dia': '19/09', 'valor': 110 }
-    ];
+    ]
     return json.jsonify(dados)
 
 @app.get('/obterArtistas')
