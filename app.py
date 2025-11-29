@@ -1,6 +1,7 @@
-from flask import Flask, render_template, json, request, Response
+from flask import Flask, render_template, json, request, Response, make_response
 import config
 from datetime import datetime
+import banco as b
 
 app = Flask(__name__)
 
@@ -12,6 +13,10 @@ def index():
 @app.get('/sobre')
 def sobre():
     return render_template('index/sobre.html', titulo='Sobre Nós')
+
+@app.get('/dash')
+def t():
+    return render_template('index/t.html', titulo='Dash')
 
 
 # adicionar a queryString com o id ou nome
@@ -49,6 +54,55 @@ def obterDados():
         { 'dia': '19/09', 'valor': 110 }
     ];
     return json.jsonify(dados)
+
+@app.get('/obterArtistas')
+def obterArtistasMaisCaros():
+    dados = b.ArtistaMaisPika()
+    resposta = make_response(json.jsonify(dados))
+
+    if type(dados) == str:
+        resposta.status_code = 500
+    else:
+        resposta.status_code = 200
+        
+    return resposta
+
+@app.get('/obterPokemons')
+def obterPokemonsMaisCaros():
+    dados = b.CartaMaisCara()
+    resposta = make_response(json.jsonify(dados))
+
+    if type(dados) == str:
+        resposta.status_code = 500
+    else:
+        resposta.status_code = 200
+        
+    return resposta
+
+@app.get('/obterElemento')
+def obterElementoMaisCaros():
+    elm = request.args["elemento"]
+    dados = b.CartaCaraElm(elm)
+    resposta = make_response(json.jsonify(dados))
+
+    if type(dados) == str:
+        resposta.status_code = 500
+    else:
+        resposta.status_code = 200
+        
+    return resposta
+
+@app.get('/obterPokemonsBaratos')
+def obterPokemonsMaisBaratos():
+    dados = b.CartaMaisBarata()
+    resposta = make_response(json.jsonify(dados))
+
+    if type(dados) == str:
+        resposta.status_code = 500
+    else:
+        resposta.status_code = 200
+
+    return resposta
 
 @app.post('/criar')
 def criar():

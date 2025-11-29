@@ -11,8 +11,8 @@ body {
 }
 
 .limitador {
-	max-width: 1200px;
-	margin: 0px auto;
+	max-width: 1880px;
+	margin: 0px ;
 
 	/* Para fazer o rodapé ficar sempre na parte inferior da página ;) */
 	min-height: 100vh;
@@ -69,6 +69,10 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+a:hover {
+    text-decoration: none;
 }
 
 body {

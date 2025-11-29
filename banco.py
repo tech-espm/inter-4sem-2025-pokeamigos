@@ -172,3 +172,101 @@ def inserirAnuncio(valor, LojId, CrdId, TpFId):
 				})
 	except Exception as e:
 		return str(e)
+
+def CartaCaraElm(elemento):
+	try:
+		with Session(engine) as sessao:
+			registro = sessao.execute(text('''select max(ElmNm) as Elm, MAX(AnuVlr) as valor, CrdNm, MAX(CrdPtvs), max(CltNm) 
+    from Anuncio a
+   inner join Carta c on a.CrdId = c.CrdId
+   inner join Elemento e on c.ElmId = e.ElmId
+   inner join Colecao clt on clt.CltId = c.CltId
+   group by CrdNm
+   HAVING Elm LIKE :elemento
+   order by valor desc
+   limit 5;''', {"elemento" : elemento}))
+			lista = []
+			for i in registro:
+				a = {
+					"elemento": i[0],
+					"valor": i[1],
+					"pokemon": i[2],
+					"vida": i[3],
+					"colecao": i[4]
+				}
+				lista.append(a)
+			return lista
+	except Exception as e:
+		return str(e)
+	
+def CartaMaisCara():
+	try:
+		with Session(engine) as sessao:
+			registro = sessao.execute(text('''select MAX(`ElmNm`) as elemento, MAX(AnuVlr) as valor, CrdNm, MAX(CrdPtvs), max(CltNm) 
+    from Anuncio a
+   inner join Carta c on a.CrdId = c.CrdId
+   inner join Elemento e on c.ElmId = e.ElmId
+   inner join Colecao clt on clt.CltId = c.CltId
+   group by CrdNm
+   order by valor desc
+   limit 10;'''))
+			lista = []
+			for i in registro:
+				a = {
+					"elemento": i[0],
+					"valor": i[1],
+					"pokemon": i[2],
+					"vida": i[3],
+					"colecao": i[4]
+				}
+				lista.append(a)
+			return lista
+	except Exception as e:
+		return str(e)
+
+def CartaMaisBarata():
+	try:
+		with Session(engine) as sessao:
+			registro = sessao.execute(text('''select MAX(`ElmNm`) as elemento, MIN(AnuVlr) as valor, CrdNm, MAX(CrdPtvs), max(CltNm) 
+    from Anuncio a
+   inner join Carta c on a.CrdId = c.CrdId
+   inner join Elemento e on c.ElmId = e.ElmId
+   inner join Colecao clt on clt.CltId = c.CltId
+   group by CrdNm
+   order by valor ASC
+   limit 10;
+'''))
+			lista = []
+			for i in registro:
+				a = {
+					"elemento": i[0],
+					"valor": i[1],
+					"pokemon": i[2],
+					"vida": i[3],
+					"colecao": i[4]
+				}
+				lista.append(a)
+			return lista
+	except Exception as e:
+		return str(e)
+
+def ArtistaMaisPika():
+	try:
+		with Session(engine) as sessao:
+			registro = sessao.execute(text('''select ArtNm, sum(AnuVlr) as ValorTotal from `Anuncio` a
+    inner join Carta c on a.CrdId = c.CrdId
+    inner join Artista art on art.ArtId = c.ArtId
+    group by ArtNm
+    order by ValorTotal desc;
+'''))
+			lista = []
+			for i in registro:
+				a = {
+					"artista": i[0],
+					"valor": i[1]
+				}
+				lista.append(a)
+			return lista
+	except Exception as e:
+		return str(e)
+
