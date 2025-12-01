@@ -44,6 +44,7 @@ def procurar():
     filtro_elemento = request.args.get('elemento')
     filtro_album = request.args.get('album')
     filtro_desejos = request.args.get('desejos')
+    filtro_artista = request.args.get('artista')
     
     titulo_pag = "Resultados da Busca"
     if filtro_desejos:
@@ -54,12 +55,16 @@ def procurar():
         titulo_pag = f"Coleção: {filtro_colecao}"
     elif filtro_nome:
         titulo_pag = f"Busca por: {filtro_nome}"
+    elif filtro_elemento:
+        titulo_pag = f"Elemento: {filtro_elemento}"
+
     cartas = b.procurarCartas(
         carta=filtro_nome,
         colecao=filtro_colecao,
         elemento=filtro_elemento,
         album=filtro_album,
         desejos=filtro_desejos,
+        artista=filtro_artista,
         usuario=None
     )
     print(filtro_colecao)

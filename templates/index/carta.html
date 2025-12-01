@@ -94,15 +94,17 @@
                 <div class="col-6 col-md-4 mb-4">
                     <span class="meta-label">Coleção</span>
                     <div class="d-flex align-items-center">
-                        <span class="collection-badge" title="Sigla">{{ carta.siglaColecao }}</span>
-                        <span class="meta-value text-truncate" title="{{ carta.colecao }}">{{ carta.colecao }}</span>
+                        <a href="/procurar?colecao={{ carta.colecao }}">
+                            <span class="collection-badge" title="Sigla">{{ carta.siglaColecao }}</span>
+                            <span class="meta-value text-truncate" title="{{ carta.colecao }}">{{ carta.colecao }}</span>
+                        </a>
                     </div>
                 </div>                
 
                 {% if carta.artista %}
                 <div class="col-6 col-md-4 mb-4">
                     <span class="meta-label">Artista</span>
-                    <a href="#" class="meta-value text-primary text-decoration-none">{{ carta.artista }}</a>
+                    <a href="/procurar?artista={{ carta.artista }}" class="meta-value text-primary text-decoration-none">{{ carta.artista }}</a>
                 </div>
                 {% endif %}
                                 

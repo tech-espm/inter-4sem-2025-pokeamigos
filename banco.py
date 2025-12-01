@@ -136,7 +136,7 @@ def obterCarta(name) -> dict:
 	except Exception as e:
 		return str(e)
 	
-def procurarCartas(carta, colecao, elemento, album, desejos, usuario) -> list:
+def procurarCartas(carta, colecao, elemento, album, desejos, artista,usuario) -> list:
 	try:
 		with Session(engine) as sessao:
 			where = "where"
@@ -164,6 +164,13 @@ def procurarCartas(carta, colecao, elemento, album, desejos, usuario) -> list:
 					where += " and"
 				where += " c.CrdNm LIKE :carta"
 				params['carta'] = f"%{carta}%"
+
+			if bool(artista):
+				if where != "where":
+					where += " and"
+				where += " art.ArtNm = :artista"
+				join += " inner join Artista art on c.ArtId = art.ArtId "
+				params['artista'] = artista
 
 			if bool(album) or bool(desejos) or bool(usuario):
 				
