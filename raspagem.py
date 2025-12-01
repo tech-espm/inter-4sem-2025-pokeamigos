@@ -11,12 +11,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 tgcCinit = {
-    "WHT": [50118, "white-flare"],
-    "MEG": [51065, "mega-evolution"],
-    "MEW": [42370, "scarlet-and-violet-151"],
-    "PRE": [47035, "prismatic-evolutions"],
-    "JTG": [47913, "journey-together"],
-    "BLK": [49946, "black-bolt"],
+    "WHT": [50118, "white-flare"]
+    # "MEG": [51065, "mega-evolution"],
+    # "MEW": [42370, "scarlet-and-violet-151"],
+    # "PRE": [47035, "prismatic-evolutions"],
+    # "JTG": [47913, "journey-together"],
+    # "BLK": [49946, "black-bolt"],
     }
 
 # colecoes = ["MEG", "MEW", "PRE", "JTG", "BLK", "WHT"]

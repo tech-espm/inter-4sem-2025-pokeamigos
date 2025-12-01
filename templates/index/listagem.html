@@ -1,0 +1,125 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+    /* Estilos Locais para Listagem */
+    
+    .page-header {
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+    .page-title {
+        font-family: "Jaro", sans-serif;
+        font-size: 3rem;
+        color: #343a40;
+        text-transform: uppercase;
+        display: inline-block;
+        border-bottom: 5px solid #F04037; /* Detalhe vermelho */
+        padding-bottom: 5px;
+    }
+
+    /* Card da Carta (Container do Link) */
+    .poke-card-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        transition: transform 0.2s ease;
+    }
+
+    .poke-card-link:hover {
+        transform: translateY(-5px); /* Efeito de levitação */
+        text-decoration: none;
+        color: inherit;
+    }
+
+    /* Wrapper da Imagem (A moldura branca) */
+    .card-image-wrapper {
+        background-color: #fff;
+        border-radius: 12px;
+        padding: 8px; /* Borda branca interna */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transition: box-shadow 0.2s ease;
+        position: relative;
+        aspect-ratio: 2.5/3.5; /* Proporção padrão de carta TCG (aprox) */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .poke-card-link:hover .card-image-wrapper {
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    .card-img-content {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Garante que a imagem preencha sem distorcer */
+        border-radius: 6px;
+    }
+
+    /* Nome da Carta abaixo da imagem */
+    .card-name {
+        font-family: "Jaro", sans-serif;
+        font-size: 1.2rem;
+        text-align: center;
+        margin-top: 10px;
+        color: #58585B;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; /* ... se o nome for muito longo */
+    }
+
+    /* Estado Vazio */
+    .empty-state {
+        text-align: center;
+        padding: 50px 20px;
+        color: #6c757d;
+    }
+</style>
+
+<div class="container pb-5">
+    
+    <div class="row">
+        <div class="col-12 page-header">
+            <h1 class="page-title">{{ titulo }}</h1>
+        </div>
+    </div>
+
+    <div class="row g-4"> {% if cartas and cartas|length > 0 %}
+            
+            {% for carta in cartas %}
+            <div class="col-6 col-sm-4 col-md-3 col-lg-3">
+                <a href="/carta?nome={{ carta.nome }}" class="poke-card-link" title="{{ carta.nome }}">
+                    <div class="card-image-wrapper">
+                        <img src="{{ carta.imagem }}" alt="{{ carta.nome }}" class="card-img-content" loading="lazy">
+                    </div>
+                    <div class="card-name">
+                        {{ carta.nome }}
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+
+        {% else %}
+            
+            <div class="col-12 empty-state">
+                <img src="/static/svg/pokeball.svg" alt="Pokebola vazia" style="width: 80px; opacity: 0.3; margin-bottom: 20px;">
+                <h3>Nenhuma carta encontrada.</h3>
+                <p>Tente buscar por outro termo ou explore nossas coleções.</p>
+                <a href="/" class="btn btn-outline-danger mt-3">Voltar para o Início</a>
+            </div>
+
+        {% endif %}
+        
+    </div>
+</div>
+
+{% endblock %}

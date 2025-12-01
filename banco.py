@@ -87,6 +87,134 @@ def obterIdCarta(name):
 				return registro[0]
 	except Exception as e:
 		return str(e)
+	
+def obterCarta(name) -> dict:
+	try:	
+		with Session(engine) as sessao:
+			query = '''Select a.AnuVlr, tpf.TpFNm, l.LojNm, c.CrdNm, c.CrdPtvs, c.CrdImg, tpc.TpCNm, e.ElmNm, e.ElmImg, cl.CltNm, cl.CltSg, art.ArtNm
+							from Anuncio a 
+							inner join Carta c on a.CrdId = c.CrdId
+							left join Elemento e on c.ElmId = e.ElmId
+							inner join Tipo_Carta tpc on c.TpCId = tpc.TpCId
+							inner join Colecao cl on c.CltId = cl.CltId
+							inner join Tipo_Foil tpf on a.TpFId = tpf.TpFId
+		 					left join Artista art on c.ArtId = art.ArtId 	
+		 					inner join Loja l on a.LojId = l.LojId 	
+							where CrdNm = :name
+		 					order by AnuVlr asc;'''
+			
+
+			registros = sessao.execute(
+				text(query),
+				{"name": name})
+
+			registros = registros.all()
+			if len(registros) == 0:
+				return "Nenum registro encontrado"
+			
+			anuncios = []
+			for anuncio in registros:
+				anuncios.append({
+					"valor": anuncio[0],
+					"tipoFoil": anuncio[1],
+					'loja': anuncio[2]
+					})
+
+			carta = {
+				'nome' : registros[0][3],
+				'hp' : registros[0][4],
+				'imagem' : registros[0][5],
+				'tipoCarta' : registros[0][6],
+				'elemento' : registros[0][7],
+				'imagemElemento' : registros[0][8],
+				'colecao' : registros[0][9],
+				'siglaColecao' : registros[0][10],
+				'artista' : registros[0][11],
+				'anuncios' : anuncios
+			}
+			return carta
+	except Exception as e:
+		return str(e)
+	
+def procurarCartas(carta, colecao, elemento, album, desejos, usuario) -> list:
+	try:
+		with Session(engine) as sessao:
+			where = "where"
+			join = ""
+			params = {}
+			
+			join_album_adicionado = False
+
+			if bool(colecao):
+				if where != "where":
+					where += " and"
+				where += " clt.CltNm = :colecao "
+				join += " inner join Colecao clt on c.CltId = clt.CltId "
+				params['colecao'] = str(colecao)
+
+			if bool(elemento):
+				if where != "where":
+					where += " and"
+				where += " c.ElmId = :elemento"
+				join += " inner join Elemento e on c.ElmId = e.ElmId "
+				params['elemento'] = elemento
+
+			if bool(carta):
+				if where != "where":
+					where += " and"
+				where += " c.CrdNm LIKE :carta"
+				params['carta'] = f"%{carta}%"
+
+			if bool(album) or bool(desejos) or bool(usuario):
+				
+				if not join_album_adicionado:
+					join += """ 
+						inner join Album_Carta ac on c.CrdId = ac.CrdId 
+						inner join Album a on ac.AlbId = a.AlbId 
+						inner join Usuario u on a.IdUsu = u.UsuId 
+					"""
+					join_album_adicionado = True
+
+				if bool(usuario):
+					if where != "where":
+						where += " and"
+					where += " u.UsuId = :usuario"
+					params['usuario'] = usuario
+
+				if bool(album):
+					if where != "where":
+						where += " and"
+					where += " a.AlbId = :album"
+					params['album'] = album
+
+				if bool(desejos):
+					if where != "where":
+						where += " and"
+					where += " a.IsWish = :desejos"
+					params['desejos'] = desejos
+
+			if where == "where":
+				return 'Nenhum filtro aplicado'
+			
+			query = f"select c.CrdNm, c.CrdImg, c.CrdId from Carta c {join} {where} order by c.CrdNm"
+			registros = sessao.execute(text(query), params).all()
+
+			if not registros:
+				return []
+			
+			cartas = []
+			for row in registros:
+				a = {
+					"nome": row.CrdNm,
+					"imagem": row.CrdImg,
+					"id": row.CrdId
+				}
+				cartas.append(a)
+			return cartas
+
+	except Exception as e:
+		print(f"Erro: {e}")
+		return []
 
 def inserirArtista(name):
 	try:

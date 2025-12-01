@@ -13,11 +13,8 @@
   <title>PokeAmigos</title>
   {% endif %}
 
-  <!--
-		https://getbootstrap.com/docs/4.6/getting-started/introduction/
-	-->
   <link href="https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&display=swap" rel="stylesheet" />
-
+  
   <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="/static/css/sweetalert2.min.css" />
   <link rel="stylesheet" type="text/css" href="/static/css/estilo.css" />
@@ -27,47 +24,20 @@
   <script type="text/javascript" src="/static/js/bootstrap.bundle.min.js"></script>
   <script type="text/javascript" src="/static/js/sweetalert2.min.js"></script>
   <script type="text/javascript" src="/static/js/projeto.js"></script>
-
+  
   {% block head %}{% endblock %}
 </head>
 
 <body>
   <div class="limitador">
-    <!--
-			Barra padrão do Bootstrap
-
-			https://getbootstrap.com/docs/4.6/components/navbar/
-		-->
-
-    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/"> Projeto </a>
-
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarToggler"
-          aria-controls="navbarToggler"
-          aria-expanded="false"
-          aria-label="Alternar navegação"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarToggler">
-          <div class="navbar-nav">
-            <a class="nav-link" href="/sobre">Sobre</a>
-          </div>
-        </div>
-      </nav> -->
-
-
-
+    
     <header class="header-top">
       <div class="container-fluid">
-        <div class="row align-items-center">
+        <div class="row align-items-center w-100">
           <div class="col-auto">
-            <img src="/static/img/navbar/logo.png" alt="Logo" class="logo-img">
+            <a href="/">
+                <img src="/static/img/navbar/logo.png" alt="Logo" class="logo-img">
+            </a>
           </div>
           <div class="col"></div>
           <div class="col-auto">
@@ -80,64 +50,66 @@
       </div>
     </header>
 
-
-
     <nav class="navbar-custom">
-      <div class="container-fluid">
-        <div class="row align-items-center w-100">
-          <div class="col">
+      <div class="container-fluid p-0">
+        <div class="row align-items-center w-100 m-0">
+          <div class="col p-0">
             <ul class="nav-items-list">
-              <a href="/">
-                <li class="nav-item-custom">
+              
+              <a href="/" class="nav-link-container">
+                <li class="nav-item-custom {% if request.path == '/' %}active{% endif %}">
                   <img src="/static/img/navbar/home.png" alt="Home" class="nav-icon">
                   <span class="nav-text">Home</span>
                 </li>
               </a>
-              <a href="/colecoes">
-                <li class="nav-item-custom">
+
+              <a href="/colecoes" class="nav-link-container">
+                <li class="nav-item-custom {% if request.path == '/colecoes' or 'colecao' in request.args %}active{% endif %}">
                   <img src="/static/img/navbar/colecoes.png" alt="Coleções" class="nav-icon">
                   <span class="nav-text">Coleções</span>
                 </li>
               </a>
-              <a href="meu-album">
-                <li class="nav-item-custom">
+
+              <a href="/meu-album" class="nav-link-container">
+                <li class="nav-item-custom {% if request.path == '/meu-album' %}active{% endif %}">
                   <img src="/static/img/navbar/meu-album.png" alt="Meu Álbum" class="nav-icon">
-                  <span class="nav-text">Meu Álbum</span>
+                  <span class="nav-text">Meus Álbuns</span>
                 </li>
               </a>
-              <a href="desejos">
-                <li class="nav-item-custom">
+
+              <a href="/procurar?desejos=true" class="nav-link-container">
+                <li class="nav-item-custom {% if request.args.get('desejos') %}active{% endif %}">
                   <img src="/static/img/navbar/desejos.png" alt="Lista de desejos" class="nav-icon">
-                  <span class="nav-text">Lista de desejos</span>
+                  <span class="nav-text">Desejos</span>
                 </li>
               </a>
-              <a href="sobre">
-                <li class="nav-item-custom">
+
+              <a href="/sobre" class="nav-link-container">
+                <li class="nav-item-custom {% if request.path == '/sobre' %}active{% endif %}">
                   <img src="/static/img/navbar/sobre.png" alt="Sobre nós" class="nav-icon">
                   <span class="nav-text">Sobre nós</span>
                 </li>
               </a>
+
             </ul>
           </div>
         </div>
       </div>
     </nav>
 
+    <div class="conteudo pt-5">
+        {% block body %}{% endblock %}
+    </div>
 
-
-    <div class="conteudo">{% block body %}{% endblock %}</div>
-
-    <div class="rodape">
-      <a class="link-rodape" href="https://sistemasdeinformacao.espm.edu.br" target="_blank">
-        <small>Desenvolvido em 2025 pelo curso de Sistemas de Informação da
-          ESPM</small>
+    <div class="rodape" style="background-color: black; padding: 20px; text-align: center;">
+      <a class="link-rodape" href="https://sistemasdeinformacao.espm.edu.br" target="_blank" style="color: white; text-decoration: none;">
+        <small style="font-family: 'Jaro', sans-serif;">Desenvolvido em 2025 pelo curso de Sistemas de Informação da ESPM</small>
         <br />
-        <img src="/static/img/logo-si-512.png" style="width: 100%; max-width: 150px" />
+        <img src="/static/img/logo-si-512.png" style="width: 100%; max-width: 150px; margin-top: 10px;" />
       </a>
     </div>
 
     {% block rodape %}{% endblock %}
   </div>
 </body>
-
 </html>

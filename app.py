@@ -22,20 +22,57 @@ def t():
 # adicionar a queryString com o id ou nome
 @app.get('/carta')
 def carta():
-    return render_template('index/carta.html', titulo='Carta')
+    nome = request.args.get('nome')
+    if nome is None: 
+        return render_template('index/erro.html', titulo='Erro', mensagem='Nome da carta não fornecido.')
+    
+    carta = b.obterCarta(nome)
+    if type(carta) is str:
+        return render_template('index/erro.html', titulo='Erro', mensagem=carta)
+    return render_template('index/carta.html', titulo='Archen', carta=carta)
+
 
 @app.get('/colecoes')
 def colecoes():
     return render_template('index/colecoes.html', titulo='Coleções')
 
-@app.get('/desejos')
-def desejos():
-    return render_template('index/desejos.html', titulo='Desejos')
 
+@app.get('/procurar')
+def procurar():
+    filtro_nome = request.args.get('nome')
+    filtro_colecao = request.args.get('colecao')
+    filtro_elemento = request.args.get('elemento')
+    filtro_album = request.args.get('album')
+    filtro_desejos = request.args.get('desejos')
+    
+    titulo_pag = "Resultados da Busca"
+    if filtro_desejos:
+        titulo_pag = "Meus Desejos"
+    elif filtro_album:
+        titulo_pag = "Meus Álbuns"
+    elif filtro_colecao:
+        titulo_pag = f"Coleção: {filtro_colecao}"
+    elif filtro_nome:
+        titulo_pag = f"Busca por: {filtro_nome}"
+    cartas = b.procurarCartas(
+        carta=filtro_nome,
+        colecao=filtro_colecao,
+        elemento=filtro_elemento,
+        album=filtro_album,
+        desejos=filtro_desejos,
+        usuario=None
+    )
+    print(filtro_colecao)
+
+    if isinstance(cartas, str):
+        return render_template('index/erro.html', titulo='Erro na Busca', mensagem=cartas)
+
+    return render_template('index/listagem.html', titulo=titulo_pag, cartas=cartas)
 
 @app.get('/meu-album')
 def meu_album():
-    return render_template('index/meu-album.html', titulo='Meu Álbum')
+    return render_template('index/meu-album.html', titulo='Meu Álbum') #usar listagem.html quando houver usuario
+
 
 
 
@@ -112,4 +149,4 @@ def criar():
     return Response(status=204)
 
 if __name__ == '__main__':
-    app.run(host=config.host, port=config.port)
+    app.run(host=config.host, port=config.port, debug=True)

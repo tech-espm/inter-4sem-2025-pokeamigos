@@ -1,7 +1,7 @@
 {% extends 'layout.html' %} {% block body %}
 
 
-
+<!-- 
 <style>
   .banner {
     font-family: "Jaro", sans-serif;
@@ -155,7 +155,146 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+</script> -->
+
+
+
+
+
+
+
+
+
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+  /* Estilo específico para o Banner Provisório conforme o design */
+  .banner-provisorio {
+    background-color: #cccccc; /* Cinza do layout */
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: "Jaro", sans-serif;
+    color: black;
+    margin-bottom: 20px;
+  }
+
+  .banner-provisorio h1 {
+    font-size: 3rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 0;
+    /* Simula o efeito de texto com borda preta grossa do design se desejar, 
+       mas o design parece ser apenas texto preto sólido no mockup */
+    text-shadow: 2px 2px 0px #fff; 
+  }
+
+  .banner-provisorio p {
+    font-family: sans-serif;
+    font-weight: bold;
+    color: #555;
+  }
+
+  .banner-aviso {
+    color: red;
+    font-weight: 900;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .h2-fonte {
+    font-family: "Jaro", sans-serif;
+    font-size: 25px;
+    color: black;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    text-transform: uppercase; /* Garante que fique igual ao layout */
+  }
+
+  /* Garante que as imagens ocupem a largura da coluna e mantenham proporção */
+  .img-destaque {
+    width: 100%;
+    height: auto;
+    border-radius: 4px; /* Opcional: leve arredondamento */
+    transition: transform 0.2s;
+  }
+  
+  .img-destaque:hover {
+    transform: scale(1.02); /* Efeito visual sênior: leve zoom ao passar o mouse */
+  }
+</style>
+
+<div class="container-fluid p-0">
+  
+  <div class="row m-0">
+    <div class="col-12 p-0">
+        <div class="banner-provisorio">
+            <h1>POKEAMIGOS</h1>
+            <p>BANNER TIPO DO SITE DA COPAG<br>(PADRONAGEM FOFA DE FUNDO)</p>
+            <span class="banner-aviso">BANNER PROVISORIO</span>
+        </div>
+    </div>
+  </div>
+
+  <div class="container-fluid px-4">
+    <div class="row g-3">
+        <div class="col-lg-3 col-md-6 col-12">
+        <img src="/static/img/img_1.jpeg" alt="Nova Coleção" class="img-destaque" />
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+        <img src="/static/img/img_2.jpeg" alt="Venha Conferir" class="img-destaque" />
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+        <img src="/static/img/img_3.jpeg" alt="Controle sua coleção" class="img-destaque" />
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+        <img src="/static/img/img_4.jpeg" alt="Produtos Festivos" class="img-destaque" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+        <h2 class="h2-fonte">Pokémons em destaque</h2>
+        </div>
+    </div>
+
+    <div class="row g-3 pb-5">
+        <div class="col-xl-2 col-lg-2 col-md-4 col-6">
+        <img src="/static/img/pokedest 3.png" alt="Staryu" class="img-destaque" />
+        </div>
+        <div class="col-xl-2 col-lg-2 col-md-4 col-6">
+        <img src="/static/img/pokedest 1.png" alt="Snorlax" class="img-destaque" />
+        </div>
+        <div class="col-xl-2 col-lg-2 col-md-4 col-6">
+        <img src="/static/img/pokedest 5.png" alt="Wooper" class="img-destaque" />
+        </div>
+        <div class="col-xl-2 col-lg-2 col-md-4 col-6">
+        <img src="/static/img/pokedest 6.png" alt="Zoroark" class="img-destaque" />
+        </div>
+        <div class="col-xl-2 col-lg-2 col-md-4 col-6">
+        <img src="/static/img/pokedest 4.png" alt="Toxtricity" class="img-destaque" />
+        </div>
+        <div class="col-xl-2 col-lg-2 col-md-4 col-6">
+        <img src="/static/img/pokedest 2.png" alt="Tinkaton" class="img-destaque" />
+        </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  "use strict";
+  // Scripts adicionais aqui se necessário
 </script>
+
+
+
 
 {% endblock %}
 
