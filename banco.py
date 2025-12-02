@@ -251,12 +251,13 @@ def inserirLoja(name):
 	except Exception as e:
 		return str(e)
 
-def inserirCarta(name, hp, img, CltId, ElmId, TpCId, ArtId):
+def inserirCarta(name, cod, hp, img, CltId, ElmId, TpCId, ArtId):
 	try:
 		with Session(engine) as sessao, sessao.begin():
-			sessao.execute(text(f"INSERT INTO Carta (CrdNm, CrdPtvs, CrdImg, CltId, ElmId, TpCId, ArtId) VALUES (:name,:hp, :img, :CltId, :ElmId, :TpCId, :ArtId)"),
+			sessao.execute(text(f"INSERT INTO Carta (CrdNm, CrdCod, CrdPtvs, CrdImg, CltId, ElmId, TpCId, ArtId) VALUES (:name, :cod, :hp, :img, :CltId, :ElmId, :TpCId, :ArtId)"),
                 {
 					"name": name,
+					"cod": cod,
 					"hp": hp,
 					"img": img,
 					"CltId": CltId,
@@ -267,12 +268,13 @@ def inserirCarta(name, hp, img, CltId, ElmId, TpCId, ArtId):
 	except Exception as e:
 		return str(e)
 
-def inserirCartaT(name, img, CltId, TpCId, ArtId):
+def inserirCartaT(name, cod, img, CltId, TpCId, ArtId):
 	try:
 		with Session(engine) as sessao, sessao.begin():
-			sessao.execute(text(f"INSERT INTO Carta (CrdNm, CrdImg, CltId, TpCId, ArtId) VALUES (:name, :img, :CltId, :TpCId, :ArtId)"),
+			sessao.execute(text(f"INSERT INTO Carta (CrdNm, CrdCod, CrdImg, CltId, TpCId, ArtId) VALUES (:name, :cod, :img, :CltId, :TpCId, :ArtId)"),
                 {
 					"name": name,
+					"cod": cod,
 					"img": img,
 					"CltId": CltId,
 					"TpCId": TpCId,
@@ -281,12 +283,13 @@ def inserirCartaT(name, img, CltId, TpCId, ArtId):
 	except Exception as e:
 		return str(e)
 
-def inserirEnergia(name, img, CltId, TpCId, ElmId):
+def inserirEnergia(name, cod, img, CltId, TpCId, ElmId):
 	try:
 		with Session(engine) as sessao, sessao.begin():
-			sessao.execute(text(f"INSERT INTO Carta (CrdNm, CrdImg, CltId, TpCId, ElmId) VALUES (:name, :img, :CltId, :TpCId, :ElmId)"),
+			sessao.execute(text(f"INSERT INTO Carta (CrdNm, CrdCod, CrdImg, CltId, TpCId, ElmId) VALUES (:name, :cod, :img, :CltId, :TpCId, :ElmId)"),
                 {
 					"name": name,
+					"cod": cod,
 					"img": img,
 					"CltId": CltId,
 					"TpCId": TpCId,

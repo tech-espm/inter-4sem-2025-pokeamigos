@@ -111,6 +111,7 @@ CREATE TABLE IF NOT EXISTS `pokeamigos`.`Carta` (
   `CrdId` INT NOT NULL AUTO_INCREMENT,
   `TpCId` INT NOT NULL,
   `CltId` INT NOT NULL,
+  `CrdCod` VARCHAR(6) NOT NULL,
   `ArtId` INT,
   `CrdPtvs` INT,
   `CrdImg` VARCHAR(300) NOT NULL,

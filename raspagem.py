@@ -11,16 +11,15 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 tgcCinit = {
-    "WHT": [50118, "white-flare"]
-    # "MEG": [51065, "mega-evolution"],
-    # "MEW": [42370, "scarlet-and-violet-151"],
-    # "PRE": [47035, "prismatic-evolutions"],
-    # "JTG": [47913, "journey-together"],
-    # "BLK": [49946, "black-bolt"],
+    "WHT": [50118, "white-flare"],
+    "MEG": [51065, "mega-evolution"],
+    "MEW": [42370, "scarlet-and-violet-151"],
+    "PRE": [47035, "prismatic-evolutions"],
+    "JTG": [47913, "journey-together"],
+    "BLK": [49946, "black-bolt"],
     }
 
-# colecoes = ["MEG", "MEW", "PRE", "JTG", "BLK", "WHT"]
-colecoes = ["WHT"]
+colecoes = ["MEG", "MEW", "PRE", "JTG", "BLK", "WHT"]
 
 objetao = {
     "WHT": [],
@@ -53,7 +52,7 @@ def inserir():
                     ElmId = b.obterIdElemento((carta["nome"].split())[-4])
                 else:
                     ElmId = b.obterIdElemento((carta["nome"].split())[-1])
-                b.inserirEnergia(carta["nome"], carta["img"], CltId, TpCId, ElmId)
+                b.inserirEnergia(carta["nome"], carta["id"], carta["img"], CltId, TpCId, ElmId)
             else:
                 artId = b.obterIdArtista(carta["artista"])
                 if not artId:
@@ -61,9 +60,9 @@ def inserir():
                     artId = b.obterIdArtista(carta["artista"])
                 if (carta["tipoCarta"].split())[0] == "Pokémon":
                     ElmId = b.obterIdElemento(carta["elemento"])
-                    b.inserirCarta(carta["nome"], carta["hp"], carta["img"], CltId, ElmId, TpCId, artId)
+                    b.inserirCarta(carta["nome"], carta["id"], carta["hp"], carta["img"], CltId, ElmId, TpCId, artId)
                 else:
-                    b.inserirCartaT(carta["nome"], carta["img"], CltId, TpCId, artId)
+                    b.inserirCartaT(carta["nome"], carta["id"], carta["img"], CltId, TpCId, artId)
             
             
             CrdId = b.obterIdCarta(carta["nome"])
@@ -151,8 +150,6 @@ def anuncios():
             if aux == "":
                 aux = tipoCarta[len(tipoCarta)-1].get_attribute("innerText")
             
-            print(j[0]["nome"])
-            print(aux)
             j[0]["indexColecao"] = indexColecao
             j[0]["tipoCarta"] = aux
             
