@@ -63,7 +63,7 @@
                 </li>
               </a>
 
-              <a href="/colecoes" class="nav-link-container">
+              <a href="/procurar?colecao=Fogo Branco" class="nav-link-container">
                 <li class="nav-item-custom {% if request.path == '/colecoes' or 'colecao' in request.args %}active{% endif %}">
                   <img src="/static/img/navbar/colecoes.png" alt="Coleções" class="nav-icon">
                   <span class="nav-text">Coleções</span>
@@ -81,6 +81,13 @@
                 <li class="nav-item-custom {% if request.args.get('desejos') %}active{% endif %}">
                   <img src="/static/img/navbar/desejos.png" alt="Lista de desejos" class="nav-icon">
                   <span class="nav-text">Desejos</span>
+                </li>
+              </a>
+
+              <a href="/dash" class="nav-link-container">
+                <li class="nav-item-custom {% if request.path == '/dash' %}active{% endif %}">
+                  <img src="/static/img/navbar/dash.png" alt="Dash" class="nav-icon">
+                  <span class="nav-text">Dash</span>
                 </li>
               </a>
 
