@@ -21,7 +21,18 @@ def foda():
                 lista.append(l)
             
             df = pd.DataFrame(lista)
-            df.to_csv("foda.csv",index=False)
+
+            def categoriza_tipo(x:str):
+                if 'Pokémon' in x:
+                    return 'Pokémon'
+                elif 'Trainer' in x:
+                    return 'Trainer'
+                elif 'Energy' in x:
+                    return 'Energy'
+
+            df['tipoCarta'] = df['tipoCarta'].apply(lambda x: categoriza_tipo(x))
+
+            df.to_csv("predicaoBase.csv",index=False)
             return len(lista)
 
     except Exception as e:
