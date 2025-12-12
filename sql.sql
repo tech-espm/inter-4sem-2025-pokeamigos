@@ -1,3 +1,4 @@
+-- Active: 1764253057582@@127.0.0.1@3306@pokeamigos
 use pokeamigos;
 
 select max(ElmNm) as Elm, MAX(AnuVlr) as valor, CrdNm, MAX(CrdPtvs), max(CltNm) 
