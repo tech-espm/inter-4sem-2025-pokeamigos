@@ -1,0 +1,434 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<style>
+    	.container{
+		margin-top:50px;
+		margin-bottom:50px;
+		background-color: #58585B;
+		border-radius: 30px;
+		box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+		position: relative;
+		overflow: hidden;
+		width: 768px;
+		max-width: 100%;
+		min-height: 480px;
+	}
+	
+	.container p{
+		font-size: 100%;
+		line-height: 20px;
+		letter-spacing: 0.3px;
+		margin: 20px 0;
+	}
+	
+	.container span{
+		font-size: 100%;
+	}
+	
+	.container a{
+		color: #eee;
+		font-size: 100%;
+		text-decoration: none;
+		margin: 15px 0 10px;
+	}
+	
+	.container button{
+		background-color: whitesmoke;
+		color: black;
+		font-size: 100%;
+		padding: 10px 45px;
+		border: 1px solid transparent;
+		border-radius: 8px;
+		font-weight: 600;
+		letter-spacing: 0.5px;
+		text-transform: uppercase;
+		margin-top: 10px;
+		cursor: pointer;
+	}
+	.container button:hover{
+		background-color: #cdd6dd;
+		color: black;
+		padding: 10px 50px;
+
+	}
+	
+	.container button.hidden{
+		background-color: transparent;
+		border-color: #58585B;
+	}
+	
+	.container form{
+		background-color: #58585B;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		padding: 0 40px;
+		height: 100%;
+	}
+    .container h1{
+        color: whitesmoke;
+    }
+	
+	.container input{
+		background-color: #eee;
+		border: 2px, solid, #b23535ff;
+		margin: 8px 0;
+		padding: 10px 15px;
+		font-size: 80%;
+		border-radius: 8px;
+		width: 100%;
+	}
+	.teste{
+		color: whitesmoke;
+	}
+    .form-container{
+		position: absolute;
+		top: 0;
+		height: 100%;
+		transition: all 0.6s ease-in-out;
+	}
+    .sign-in{
+		left: 0;
+		width: 50%;
+		z-index: 2;
+	}	
+	.container.active .sign-in{
+		transform: translateX(100%);
+	}
+	.sign-up{
+		left: 0;
+		width: 50%;
+		opacity: 0;
+		z-index: 1;
+	}
+	.container.active .sign-up{
+		transform: translateX(100%);
+		opacity: 1;
+		z-index: 5;
+		animation: move 0.6s;
+	}
+	
+	@keyframes move{
+		0%, 49.99%{
+			opacity: 0;
+			z-index: 1;
+		}
+		50%, 100%{
+			opacity: 1;
+			z-index: 5;
+		}
+	}
+	
+	.toggle-container{
+		position: absolute;
+		top: 0;
+		left: 50%;
+		width: 50%;
+		height: 100%;
+		overflow: hidden;
+		transition: all 0.6s ease-in-out;
+		border-radius: 150px 0 0 100px;
+		z-index: 1000;
+	}
+	
+	.container.active .toggle-container{
+		transform: translateX(-100%);
+		border-radius: 0 150px 100px 0;
+	}
+	
+	.toggle{
+		background-color: #F04037;
+		height: 100%;
+		background: linear-gradient(to right, #F04037, #F04037);
+		color: whitesmoke;
+		height: 100%;
+		color: whitesmoke;
+		position: relative;
+		left: -100%;
+		height: 100%;
+		width: 200%;
+		transform: translateX(0);
+		transition: all 0.6s ease-in-out;
+	}
+	
+	.container.active .toggle{
+		transform: translateX(50%);
+	}
+	
+	.toggle-panel{
+		position: absolute;
+		width: 50%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		padding: 0 30px;
+		text-align: center;
+		top: 0;
+		transform: translateX(0);
+		transition: all 0.6s ease-in-out;
+	}
+	
+	.toggle-left{
+		transform: translateX(-200%);
+	}
+	
+	.container.active .toggle-left{
+		transform: translateX(0);
+	}
+	
+	.toggle-right{
+		right: 0;
+		transform: translateX(0);
+	}
+	
+	.container.active .toggle-right{
+		transform: translateX(200%);
+	}
+</style>
+<div class="container" id="container">
+    <div class="form-container sign-up">
+        <form>
+            <h1>Registre-se</h1>
+            
+            <input id="inputNomeC" type="text" placeholder="Nome">
+            <input id="inputEmailC" type="email" placeholder="Email">
+			<input id="inputSenhaC" type="password" placeholder="Senha">
+            <button type="button" onclick="criarCadastro()">Registrar</button>
+        </form>
+    </div>
+    <div class="form-container sign-in">
+        <form>
+            <h1>Entre</h1>
+            <input id="inputEmailE" type="email" placeholder="Email">
+            <input id="inputSenhaE" type="password" placeholder="Senha">
+            <a href="#">Esqueci minha senha</a>
+            <button type="button" onclick="fazerLogin()">LogIn</button>
+        </form>
+    </div>
+    <div class="toggle-container">
+        <div class="toggle">
+            <div class="toggle-panel toggle-left">
+                <h1>Já tem uma conta?</h1>
+                <p class="branco">Clique abaixo para acessá-la</p>
+                <button class="" id="login">Fazer login</button>
+            </div>
+            <div class="toggle-panel toggle-right">
+                <h1 class="teste">Ainda não tem uma conta?</h1>
+                <p class="branco"	>Cadastre-se para ter acesso completo!</p>
+                <button class="" id="register">Cadastre-se</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const container = document.getElementById('container');
+	const registerBtn = document.getElementById('register');
+	const loginBtn = document.getElementById('login');
+
+	registerBtn.addEventListener('click', () => {
+		container.classList.add("active");
+	});
+
+	loginBtn.addEventListener('click', () => {
+		container.classList.remove("active");
+	}); 
+	let regExpAmp = /\&/g, regExpLt = /</g, regExpGt = />/g;
+
+	function encode(x) {
+		return (x ? x.replace(regExpAmp, "&amp;").replace(regExpLt, "&lt;").replace(regExpGt, "&gt;") : "");
+	}
+
+	async function criarCadastro() {
+		let nomeC = encode((document.getElementById("inputNomeC")).value.normalize().trim())
+		let emailC = encode((document.getElementById("inputEmailC")).value.normalize().trim())
+		let senhaC = encode((document.getElementById("inputSenhaC")).value.normalize().trim())
+
+		if (!nomeC){
+			console.log("Nome completo vazio!")
+			Swal.fire({
+				title: "Atenção!",
+				type: 'warning',
+				text: "Nome completo vazio.",
+				icon: "warning",
+				confirmButtonColor: "rgba(248,187,134,255)"
+				
+			});
+			return;
+		} 
+		else {
+			console.log("Nome: " + nomeC);
+		};
+		if (!emailC){
+			console.log("E-mail está vazio!")
+			Swal.fire({
+				title: "Atenção!",
+				type: 'warning',
+				text: "E-mail está vazio.",
+				icon: "warning",
+				confirmButtonColor: "rgba(248,187,134,255)"
+			});
+			return;
+		} 
+		else {
+			console.log("E-mail: " + emailC);
+		};
+		if (!senhaC){
+			console.log("Senha está vazia!")
+			Swal.fire({
+				title: "Atenção!",
+				type: 'warning',
+				text: "Senha está vazia.",
+				icon: "warning",
+				confirmButtonColor: "rgba(248,187,134,255)"
+			});
+			return;
+		} 
+		else {
+			console.log("Senha: " + senhaC);
+		};
+		let cliente = {
+			usuNome: nomeC,
+			usuMail: emailC,
+			usuPass: senhaC,
+		};
+		
+		try {
+			let response = await fetch("/criarUsuario", {
+				method: "POST",
+				body: JSON.stringify(cliente),
+				headers: {
+					"content-type": "application/json"
+				}
+			});
+			console.log(response.body)
+			console.log(response.status)
+			if (!response.ok) {
+				console.log("Ocorreu um erro ao se criar o cadastro.");
+				Swal.fire({
+					title: "Oops..☠☠☠ ",
+					text: "Ocorreu um erro ao se cadastrar",
+					icon: "error",
+					confirmButtonColor: "whitesmoke"
+				});
+				return;
+			}
+
+			nomeC.value = "";
+			emailC.value = "";
+			senhaC.value = "";
+
+			Swal.fire({
+				title: "Parabéns!",
+          		text: "Cadastro criado com sucesso!",
+          		icon: "success",
+          		confirmButtonColor: "#5aa621"
+			}).then(() => {
+				window.location = "/login"
+			});
+			console.log("Cadastro criado com sucesso!");
+		}
+		catch (ex) {
+			Swal.fire({
+				title: "Oops...",
+          		text: "Ocorreu um erro de rede ao criar o cliente: " + ex.message,
+          		icon: "error",
+          		confirmButtonColor: "#b73501"
+			});
+			console.log("Ocorreu um erro de rede ao criar o cliente " + ex.message);
+		}
+		
+	}
+	async function fazerLogin() {
+		let emailE = encode((document.getElementById("inputEmailE")).value.normalize().trim())
+		let senhaE = encode((document.getElementById("inputSenhaE")).value.normalize().trim())
+
+		if (!emailE){
+			console.log("E-mail está vazio!")
+			Swal.fire({
+				title: "Atenção!",
+				type: 'warning',
+				text: "E-mail está vazio.",
+				icon: "warning",
+				confirmButtonColor: "rgba(248,187,134,255)"
+			});
+			return;
+		} 
+		else {
+			console.log("E-mail: " + emailE);
+		};
+		if (!senhaE){
+			console.log("Senha está vazia!")
+			Swal.fire({
+				title: "Atenção!",
+				type: 'warning',
+				text: "Senha está vazia.",
+				icon: "warning",
+				confirmButtonColor: "rgba(248,187,134,255)"
+			});
+			return;
+		} 
+		else {
+			console.log("Senha: " + senhaE);
+		};
+		let lg = {
+			usuMail: emailE,
+			usuPass: senhaE
+		};
+		try {
+			let response = await fetch("/efetuarLogin", {
+				method: "POST",
+				body: JSON.stringify(lg),
+				headers: {
+					"content-type": "application/json"
+				}
+			});
+			console.log(response.body)
+			console.log(response.status)
+			if (!response.ok) {
+				console.log("Ocorreu um erro ao se fazer login.");
+				Swal.fire({
+					title: "Oops..☠☠☠ ",
+					text: "Ocorreu um erro ao logar",
+					icon: "error",
+					confirmButtonColor: "whitesmoke"
+				});
+				return;
+			}
+
+			
+			emailE.value = "";
+			senhaE.value = "";
+			
+
+			Swal.fire({
+				title: "Parabéns!",
+          		text: "Login feito com sucesso!",
+          		icon: "success",
+          		confirmButtonColor: "#5aa621"
+			}).then(() => {
+				window.location = "/"
+			}) ;;
+			console.log("Cadastro criado com sucesso!");
+		}
+		catch (ex) {
+			Swal.fire({
+				title: "Oops...",
+          		text: "Ocorreu um erro de rede ao fazer login: " + ex.message,
+          		icon: "error",
+          		confirmButtonColor: "#b73501"
+			});
+			console.log("Ocorreu um erro de rede ao fazer o login " + ex.message);
+		}
+
+	}
+</script>
+
+
+{% endblock %}

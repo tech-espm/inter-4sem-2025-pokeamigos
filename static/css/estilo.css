@@ -104,6 +104,11 @@ body {
         font-variation-settings: 'opsz' 6;
     }
 
+    .login-text:hover {
+        text-decoration: none;
+        color: white;
+    }
+
     .user-avatar {
         width: 49px;
         height: 49px;

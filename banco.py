@@ -88,7 +88,7 @@ def obterIdCarta(name):
 	except Exception as e:
 		return str(e)
 	
-def obterCarta(name) -> dict:
+def obterCarta(Id) -> dict:
 	try:	
 		with Session(engine) as sessao:
 			query = '''Select a.AnuVlr, tpf.TpFNm, l.LojNm, c.CrdNm, c.CrdPtvs, c.CrdImg, tpc.TpCNm, e.ElmNm, e.ElmImg, cl.CltNm, cl.CltSg, art.ArtNm
@@ -100,13 +100,13 @@ def obterCarta(name) -> dict:
 							inner join Tipo_Foil tpf on a.TpFId = tpf.TpFId
 		 					left join Artista art on c.ArtId = art.ArtId 	
 		 					inner join Loja l on a.LojId = l.LojId 	
-							where CrdNm = :name
+							where c.CrdId = :id
 		 					order by AnuVlr asc;'''
 			
 
 			registros = sessao.execute(
 				text(query),
-				{"name": name})
+				{"id": Id})
 
 			registros = registros.all()
 			if len(registros) == 0:
@@ -409,3 +409,28 @@ def ArtistaMaisPika():
 	except Exception as e:
 		return str(e)
 
+def criaUsu(dados):
+	try:
+		with Session(engine) as sessao, sessao.begin():
+			sessao.execute(text("INSERT INTO usuario (UsuMail, UsuHash, UsuNm, Usuariocol) VALUES (:mail, :pass, :nome, :f)"),
+            {
+				"mail": dados["usuMail"],
+				"pass": dados["usuPass"],
+				"nome": dados["usuNome"],
+				"f": "É FODA RAFA ..... EL"
+			})
+			return 200
+	except Exception as e:
+		return str(e)
+
+def login(dados):
+    try:
+        with Session(engine) as sessao:
+            usu = sessao.execute(text("select UsuId from usuario where UsuMail = :mail and UsuHash = :pass"),
+            {
+				"mail": dados["usuMail"],
+				"pass": dados["usuPass"]
+			})
+            return usu
+    except Exception as e:
+        return str(e)

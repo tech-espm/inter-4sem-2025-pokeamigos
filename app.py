@@ -22,11 +22,12 @@ def t():
 # adicionar a queryString com o id ou nome
 @app.get('/carta')
 def carta():
-    nome = request.args.get('nome')
-    if nome is None: 
+    Id = request.args.get('id')
+    if Id is None: 
         return render_template('index/erro.html', titulo='Erro', mensagem='Nome da carta não fornecido.')
     
-    carta = b.obterCarta(nome)
+    carta = b.obterCarta(Id)
+    print(carta)
     if type(carta) is str:
         return render_template('index/erro.html', titulo='Erro', mensagem=carta)
     return render_template('index/carta.html', titulo='Archen', carta=carta)
@@ -78,7 +79,9 @@ def procurar():
 def meu_album():
     return render_template('index/meu-album.html', titulo='Meu Álbum') #usar listagem.html quando houver usuario
 
-
+@app.get('/login')
+def login():
+    return render_template('index/login.html', titulo='Cadastro')
 
 
 @app.get('/obterDados')
@@ -96,6 +99,39 @@ def obterDados():
         { 'dia': '19/09', 'valor': 110 }
     ]
     return json.jsonify(dados)
+
+@app.post('/criarUsuario')
+def criarUsuario():
+    dados = request.get_json()
+
+    resp = b.criaUsu(dados)
+    
+    resposta = make_response(json.jsonify(resp))
+
+    if type(resp) == str:
+        resposta.status_code = 500
+    else:
+        resposta.status_code = 200
+        
+    return resposta
+
+@app.post('/efetuarLogin')
+def Login():
+    dados = request.get_json()
+
+    usuario = b.login(dados)
+    for i in usuario:
+        usuario = i
+    if not usuario:
+        return make_response(json.jsonify({"status": 401}))
+    
+    resp = make_response(json.jsonify({"status": 200}))
+    resp.set_cookie(
+            "usuario",
+            f"{usuario[0]}",
+            max_age=60 * 60 *24 * 7
+        )
+    return resp
 
 @app.get('/obterArtistas')
 def obterArtistasMaisCaros():
