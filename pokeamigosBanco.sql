@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `pokeamigos`.`Usuario` ;
 
 CREATE TABLE IF NOT EXISTS `pokeamigos`.`Usuario` (
   `UsuId` INT NOT NULL AUTO_INCREMENT,
-  `UsuMail` VARCHAR(45) NOT NULL,
+  `UsuMail` VARCHAR(45) NOT NULL IS UNIQUE,
   `UsuHash` VARCHAR(45) NOT NULL,
   `UsuNm` VARCHAR(45) NOT NULL,
   `Usuariocol` VARCHAR(45) NOT NULL,
@@ -39,7 +39,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `pokeamigos`.`Album` ;
 
 CREATE TABLE IF NOT EXISTS `pokeamigos`.`Album` (
-  `AlbId` INT NOT NULL,
+  `AlbId` INT NOT NULL AUTO_INCREMENT,
   `IsWish` TINYINT NOT NULL,
   `IdUsu` INT NOT NULL,
   PRIMARY KEY (`AlbId`),
@@ -151,7 +151,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `pokeamigos`.`Album_Carta` ;
 
 CREATE TABLE IF NOT EXISTS `pokeamigos`.`Album_Carta` (
-  `Album_CartaId` INT NOT NULL,
+  `Album_CartaId` INT NOT NULL AUTO_INCREMENT,
   `AlbId` INT NOT NULL,
   `CrdId` INT NOT NULL,
   PRIMARY KEY (`Album_CartaId`),
