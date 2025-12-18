@@ -198,7 +198,11 @@ def procurarCartas(carta, colecao, elemento, album, desejos, artista,usuario) ->
 					if where != "where":
 						where += " and"
 					where += " a.IsWish = :desejos"
-					params['desejos'] = desejos
+					if desejos == "true":
+						aux = 1
+					else:
+						aux = 0
+					params['desejos'] = aux
 
 			if where == "where":
 				return 'Nenhum filtro aplicado'
@@ -419,8 +423,14 @@ def criaUsu(dados):
 				"nome": dados["usuNome"],
 				"f": "É FODA RAFA ..... EL"
 			})
+			Id = sessao.execute(text("select UsuId from usuario where UsuMail = :mail"), {"mail": dados["usuMail"]})
+			for i in Id:
+				Id = i
+			sessao.execute(text("insert into album (IdUsu, IsWish) values (:id, :bool)"), {"id": Id[0], "bool": 0})
+			sessao.execute(text("insert into album (IdUsu, IsWish) values (:id, :bool)"), {"id": Id[0], "bool": 1})
 			return 200
 	except Exception as e:
+		print(e)
 		return str(e)
 
 def login(dados):
@@ -503,3 +513,139 @@ def obterColecoes():
 			return lista
 	except Exception as e:
 		return str(e)
+def adicionarWish(usu, carta):
+    try:
+        with Session(engine) as sessao, sessao.begin():
+            wish = sessao.execute(text("select AlbId from Album where IdUsu = :id and IsWish = :wish"),
+            {
+				"id": usu,
+				"wish": 1
+    		})
+            for i in wish:
+                wish = i
+            wish = wish[0]
+            sessao.execute(text("insert into album_carta (AlbId, CrdId) values (:wish, :carta)"),
+                {
+					"wish": wish,
+					"carta": carta
+				})
+            return 200
+    except Exception as e:
+        return str(e)
+    
+def removerWish(usu, carta):
+    try:
+        with Session(engine) as sessao, sessao.begin():
+            wish = sessao.execute(text("select AlbId from Album where IdUsu = :id and IsWish = :wish"),
+            {
+				"id": usu,
+				"wish": 1
+    		})
+            for i in wish:
+                wish = i
+            wish = wish[0]
+            sessao.execute(text("delete from album_carta where AlbId = :wish and CrdId = :carta"),
+                {
+					"wish": wish,
+					"carta": carta
+				})
+            return 200
+    except Exception as e:
+        return str(e)
+    
+def adicionarAlbum(usu, carta):
+    try:
+        with Session(engine) as sessao, sessao.begin():
+            wish = sessao.execute(text("select AlbId from Album where IdUsu = :id and IsWish = :wish"),
+            {
+				"id": usu,
+				"wish": 0
+    		})
+            for i in wish:
+                wish = i
+            wish = wish[0]
+            sessao.execute(text("insert into album_carta (AlbId, CrdId) values (:wish, :carta)"),
+                {
+					"wish": wish,
+					"carta": carta
+				})
+            return 200
+    except Exception as e:
+        return str(e)
+    
+def removerAlbum(usu, carta):
+    try:
+        with Session(engine) as sessao, sessao.begin():
+            wish = sessao.execute(text("select AlbId from Album where IdUsu = :id and IsWish = :wish"),
+            {
+				"id": usu,
+				"wish": 0
+    		})
+            for i in wish:
+                wish = i
+            wish = wish[0]
+            sessao.execute(text("delete from album_carta where AlbId = :wish and CrdId = :carta"),
+                {
+					"wish": wish,
+					"carta": carta
+				})
+            return 200
+    except Exception as e:
+        print(e)
+        return str(e)
+    
+def isInWish(usu, carta):
+    try:
+        with Session(engine) as sessao, sessao.begin():
+            wish = sessao.execute(text("select AlbId from Album where IdUsu = :id and IsWish = :wish"),
+            {
+				"id": usu,
+				"wish": 1
+    		})
+            
+            for i in wish:
+                wish = i
+            wish = wish[0]
+            isIn = sessao.execute(text("select * from album_carta where CrdId = :carta and AlbId = :wish"),
+                {
+					"wish": wish,
+					"carta": carta
+				}).first()
+            
+            if isIn is None:
+                isIn = 0
+            else:
+                for i in isIn:
+                    isIn=i
+                isIn = isIn[0]
+
+            return isIn
+    except Exception as e:
+        return str(e)
+    
+def isInAlb(usu, carta):
+    try:
+        with Session(engine) as sessao, sessao.begin():
+            wish = sessao.execute(text("select AlbId from Album where IdUsu = :id and IsWish = :wish"),
+            {
+				"id": usu,
+				"wish": 0
+    		})
+            for i in wish:
+                wish = i
+            wish = wish[0]
+            isIn = sessao.execute(text("select * from album_carta where CrdId = :carta and AlbId = :wish"),
+                {
+					"wish": wish,
+					"carta": carta
+				}).first()
+            
+            if isIn is None:
+                isIn = 0
+            else:
+                for i in isIn:
+                    isIn=i
+                isIn = isIn[0]
+            return isIn
+    except Exception as e:
+        return str(e)

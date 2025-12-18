@@ -8,15 +8,18 @@ app = Flask(__name__)
 @app.get('/')
 def index():
     hoje = datetime.today().strftime('%Y-%m-%d')
-    return render_template('index/index.html', hoje=hoje)
+    usu = request.cookies.get("usuario")
+    return render_template('index/index.html', hoje=hoje, usuario=usu)
 
 @app.get('/sobre')
 def sobre():
-    return render_template('index/sobre.html', titulo='Sobre Nós')
+    usu = request.cookies.get("usuario")
+    return render_template('index/sobre.html', titulo='Sobre Nós', usuario=usu)
 
 @app.get('/dash')
 def t():
-    return render_template('index/t.html', titulo='Dash')
+    usu = request.cookies.get("usuario")
+    return render_template('index/t.html', titulo='Dash', usuario=usu)
 
 
 # adicionar a queryString com o id ou nome
@@ -27,10 +30,18 @@ def carta():
         return render_template('index/erro.html', titulo='Erro', mensagem='Nome da carta não fornecido.')
     
     carta = b.obterCarta(Id)
-    print(carta)
+    
+    usu = request.cookies.get("usuario")
+    if usu:
+        isInWish = b.isInWish(usu, Id)
+        isInAlb = b.isInAlb(usu, Id)
+    else:
+        isInWish = 0
+        isInAlb = 0
+    
     if type(carta) is str:
         return render_template('index/erro.html', titulo='Erro', mensagem=carta)
-    return render_template('index/carta.html', titulo='Archen', carta=carta)
+    return render_template('index/carta.html', titulo=carta["nome"], carta=carta, usuario=usu, id=Id, wish=isInWish, alb=isInAlb)
 
 
 @app.get('/colecoes')
@@ -46,12 +57,12 @@ def procurar():
     filtro_album = request.args.get('album')
     filtro_desejos = request.args.get('desejos')
     filtro_artista = request.args.get('artista')
-    
+    usu = request.cookies.get("usuario")
     titulo_pag = "Resultados da Busca"
-    if filtro_desejos:
+    if filtro_desejos == "true":
         titulo_pag = "Meus Desejos"
-    elif filtro_album:
-        titulo_pag = "Meus Álbuns"
+    elif filtro_desejos == "false":
+        titulo_pag = "Minhas Cartas"
     elif filtro_colecao:
         titulo_pag = f"Coleção: {filtro_colecao}"
     elif filtro_nome:
@@ -79,11 +90,15 @@ def procurar():
 
 @app.get('/meu-album')
 def meu_album():
+    usu = request.cookies.get("usuario")
+    if usu:
+        return render_template("index/listagem.html", titulo="Meu Álbum")
     return render_template('index/meu-album.html', titulo='Meu Álbum') #usar listagem.html quando houver usuario
 
 @app.get('/login')
 def login():
-    return render_template('index/login.html', titulo='Cadastro')
+    usu = request.cookies.get("usuario")
+    return render_template('index/login.html', titulo='Cadastro', usu=usu)
 
 
 @app.get('/obterDados')
@@ -184,12 +199,43 @@ def obterPokemonsMaisBaratos():
 
     return resposta
 
-@app.post('/criar')
-def criar():
-    dados = request.json
-    print(dados['id'])
-    print(dados['nome'])
-    return Response(status=204)
+@app.post("/toggleWish")
+def toggleWish():
+    usu = request.args["usu"]
+    card = request.args["card"]
+    
+    check = b.isInWish(usu, card)
+    if check:
+        resp = b.removerWish(usu, card)
+    else:
+        resp = b.adicionarWish(usu, card)
+    resposta = make_response(json.jsonify(resp))
+    
+    if type(resp) == str:
+        resposta.status_code = 500
+    else:
+        resposta.status_code = 200
+        
+    return resposta
+
+@app.post("/toggleAlbum")
+def toggleAlbum():
+    usu = request.args["usu"]
+    card = request.args["card"]
+    check = b.isInAlb(usu, card)
+    if check:
+        resp = b.removerAlbum(usu, card)
+    else:
+        resp = b.adicionarAlbum(usu, card)
+
+    resposta = make_response(json.jsonify(resp))
+    
+    if type(resp) == str:
+        resposta.status_code = 500
+    else:
+        resposta.status_code = 200
+        
+    return resposta
 
 
 

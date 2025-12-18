@@ -41,14 +41,28 @@
         <div class="col-md-4 mb-4 text-center">
             <img src="{{ carta.imagem }}" alt="{{ carta.nome }}" class="img-fluid card-detail-img w-100" style="max-width: 400px;">
             
-            <!-- <div class="mt-3 d-flex justify-content-center">
-                <button class="btn btn-outline-secondary btn-sm mr-2" title="Adicionar aos Desejos">
-                    <i class="fas fa-heart"></i> Favoritar
+            {% if usuario %}
+            <div class="mt-3 d-flex justify-content-center">
+                {% if wish%}
+                <button class="btn btn-outline-secondary btn-sm mr-2" title="Remover dos Desejos" onclick="toggleDesejo()">
+                    <i><span  class="fas fa-heart-crack" style="color: #ee0000"></span> Remover dos Desejos</i> 
                 </button>
-                <button class="btn btn-outline-secondary btn-sm" title="Copiar Link">
-                    <i class="fas fa-link"></i>
+                {%else%}
+                <button class="btn btn-outline-secondary btn-sm mr-2" title="Adicionar aos Desejos" onclick="toggleDesejo()">
+                    <i><span  class="fas fa-heart" style="color: #ee0000"></span> Adicionar aos Desejos</i> 
                 </button>
-            </div> -->
+                {% endif %}
+                {% if alb%}
+                <button class="btn btn-outline-secondary btn-sm" title="Remover do Álbum" onclick="toggleAlbum()">
+                    <i><span class="fas fa-star-half-stroke" style="color: #FFD43B;"></span>Remover do Álbum</i>
+                </button>
+                {% else %}
+                <button class="btn btn-outline-secondary btn-sm" title="Adicionar ao Álbum" onclick="toggleAlbum()">
+                    <i><span class="fas fa-star" style="color: #FFD43B;"></span>Adicionar ao Álbum</i>
+                </button>
+                {% endif %}
+            </div>
+            {% endif %}
         </div>
 
         <div class="col-md-8">
@@ -142,5 +156,53 @@
         </div>
     </div>
 </div>
+{% if usuario %}
+<script>
+    async function toggleDesejo(){
+        const usu = {{ usuario | tojson }};
+        const carta = {{ id }};
+        let result = await fetch(`/toggleWish?card=`+carta+`&usu=`+usu, {method: "POST"})
+        if( result.status_code == 500){
+            Swal.fire({
+				title: "Oops..☠☠☠ ",
+				text: "Ocorreu um erro",
+				icon: "error",
+				confirmButtonColor: "whitesmoke"
+			});
+        }
+        Swal.fire({
+				title: "Parabéns!",
+          		text: "Carta adicionada com sucesso!",
+          		icon: "success",
+          		confirmButtonColor: "#5aa621"
+			}).then(() => {
+				window.location.reload()
+			});
+    }
+</script>
+<script>
+    async function toggleAlbum(){
+        const usu = {{ usuario | tojson }};
+        const carta = {{ id }};
+        let result = await fetch(`/toggleAlbum?card=`+carta+`&usu=`+usu, {method: "POST"})
+        if( result.status_code == 500){
+            Swal.fire({
+				title: "Oops..☠☠☠ ",
+				text: "Ocorreu um erro",
+				icon: "error",
+				confirmButtonColor: "whitesmoke"
+			});
+        }
+        Swal.fire({
+				title: "Parabéns!",
+          		text: "Carta adicionada com sucesso!",
+          		icon: "success",
+          		confirmButtonColor: "#5aa621"
+			}).then(() => {
+				window.location.reload()
+			});
+    }
+</script>
 
+{% endif %}
 {% endblock %}
