@@ -79,12 +79,14 @@ def procurar():
         artista=filtro_artista,
         usuario=None
     )
-    print(filtro_colecao)
+    colecoes = b.obterColecoes()
+    elementos = b.obterElementos(["Fogo Branco"])
+    artistas = b.obterArtistas(["Fogo Branco"])
 
     if isinstance(cartas, str):
         return render_template('index/erro.html', titulo='Erro na Busca', mensagem=cartas)
 
-    return render_template('index/listagem.html', titulo=titulo_pag, cartas=cartas, usuario=usu)
+    return render_template('index/listagem.html', titulo=titulo_pag, cartas=cartas, elementos=elementos, artistas=artistas, colecoes=colecoes, colecao=filtro_colecao, elemento=filtro_elemento, album=filtro_album, desejos=filtro_desejos, artista=filtro_artista)
 
 @app.get('/meu-album')
 def meu_album():
@@ -234,6 +236,8 @@ def toggleAlbum():
         resposta.status_code = 200
         
     return resposta
+
+
 
 if __name__ == '__main__':
     app.run(host=config.host, port=config.port, debug=True)

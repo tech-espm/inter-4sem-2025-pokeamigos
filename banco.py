@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, text, bindparam
 from sqlalchemy.orm import Session
 from config import conexao_banco
 
@@ -155,7 +155,7 @@ def procurarCartas(carta, colecao, elemento, album, desejos, artista,usuario) ->
 			if bool(elemento):
 				if where != "where":
 					where += " and"
-				where += " c.ElmId = :elemento"
+				where += " e.ElmNm = :elemento "
 				join += " inner join Elemento e on c.ElmId = e.ElmId "
 				params['elemento'] = elemento
 
@@ -445,6 +445,74 @@ def login(dados):
     except Exception as e:
         return str(e)
 
+def obterArtistas(colecoes):
+	try:
+		with Session(engine) as sessao:
+			sql = text("""
+				SELECT DISTINCT art.ArtNm
+				FROM Artista art
+				INNER JOIN Carta c ON c.ArtId = art.ArtId
+				INNER JOIN Colecao clt ON clt.CltId = c.CltId
+				WHERE clt.CltNm IN :colecoes
+				ORDER BY art.ArtNm
+			""").bindparams(
+				bindparam("colecoes", expanding=True)
+			)
+
+			registro = sessao.execute(sql, {"colecoes": colecoes})
+
+			lista = []
+			for i in registro:
+				a = {
+					"nome": i[0]
+				}
+				lista.append(a)
+			return lista
+	except Exception as e:
+		return str(e)
+
+def obterElementos(colecoes):
+	try:
+		with Session(engine) as sessao:
+
+			sql = text("""
+				SELECT DISTINCT e.ElmNm, e.ElmImg
+				FROM Elemento e
+				INNER JOIN Carta c ON c.ElmId = e.ElmId
+				INNER JOIN Colecao clt ON clt.CltId = c.CltId
+				WHERE clt.CltNm IN :colecoes
+				ORDER BY e.ElmNm
+			""").bindparams(
+				bindparam("colecoes", expanding=True)
+			)
+
+			registro = sessao.execute(sql, {"colecoes": colecoes})
+
+			lista = []
+			for i in registro:
+				a = {
+					"nome": i[0],
+					"img": i[1]
+				}
+				lista.append(a)
+			return lista
+	except Exception as e:
+		return str(e)
+
+def obterColecoes():
+	try:
+		with Session(engine) as sessao:
+			registro = sessao.execute(text("select CltNm, CltSg from Colecao order by CltNm"))
+			lista = []
+			for i in registro:
+				a = {
+					"nome": i[0],
+					"sigla": i[1]
+				}
+				lista.append(a)
+			return lista
+	except Exception as e:
+		return str(e)
 def adicionarWish(usu, carta):
     try:
         with Session(engine) as sessao, sessao.begin():

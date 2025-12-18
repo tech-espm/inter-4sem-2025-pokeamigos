@@ -2,14 +2,11 @@
 
 {% block body %}
 
-<link
-  href="https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&display=swap"
-  rel="stylesheet"
-/>
+<link href="https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&display=swap" rel="stylesheet" />
 
 <style>
     /* Estilos Locais para Listagem */
-    
+
     .page-header {
         text-align: center;
         margin-top: 40px;
@@ -22,7 +19,8 @@
         color: #343a40;
         text-transform: uppercase;
         display: inline-block;
-        border-bottom: 5px solid #F04037; /* Detalhe vermelho */
+        border-bottom: 5px solid #F04037;
+        /* Detalhe vermelho */
         padding-bottom: 5px;
     }
 
@@ -35,7 +33,8 @@
     }
 
     .poke-card-link:hover {
-        transform: translateY(-5px); /* Efeito de levitação */
+        transform: translateY(-5px);
+        /* Efeito de levitação */
         text-decoration: none;
         color: inherit;
     }
@@ -44,24 +43,27 @@
     .card-image-wrapper {
         background-color: #fff;
         border-radius: 12px;
-        padding: 8px; /* Borda branca interna */
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        padding: 8px;
+        /* Borda branca interna */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         transition: box-shadow 0.2s ease;
         position: relative;
-        aspect-ratio: 2.5/3.5; /* Proporção padrão de carta TCG (aprox) */
+        aspect-ratio: 2.5/3.5;
+        /* Proporção padrão de carta TCG (aprox) */
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
     .poke-card-link:hover .card-image-wrapper {
-        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
     .card-img-content {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* Garante que a imagem preencha sem distorcer */
+        object-fit: cover;
+        /* Garante que a imagem preencha sem distorcer */
         border-radius: 6px;
     }
 
@@ -74,7 +76,8 @@
         color: #58585B;
         white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis; /* ... se o nome for muito longo */
+        text-overflow: ellipsis;
+        /* ... se o nome for muito longo */
     }
 
     /* Estado Vazio */
@@ -86,40 +89,94 @@
 </style>
 
 <div class="container pb-5">
-    
+
     <div class="row">
         <div class="col-12 page-header">
             <h1 class="page-title">{{ titulo }}</h1>
         </div>
     </div>
 
+
+
     <div class="row g-4"> {% if cartas and cartas|length > 0 %}
-            
-            {% for carta in cartas %}
-            <div class="col-6 col-sm-4 col-md-3 col-lg-3">
-                <a href="/carta?id={{ carta.id }}" class="poke-card-link" title="{{ carta.nome }}">
-                    <div class="card-image-wrapper">
-                        <img src="{{ carta.imagem }}" alt="{{ carta.nome }}" class="card-img-content" loading="lazy">
-                    </div>
-                    <div class="card-name">
-                        {{ carta.nome }}
-                    </div>
-                </a>
+
+        <div class="col-12 col-lg-3">
+            <div class="card border-0 shadow-sm p-3 mb-4">
+                <h4 class="mb-3" style="font-family: 'Jaro', sans-serif; color: #58585B;">Filtros</h4>
+
+                <h6 class="fw-bold text-uppercase small text-muted mb-2">Coleções</h6>
+                <select class="form-select" name="colecao" onchange="atualizarFiltros()">
+                    <option value="" {% if not colecao %}selected{% endif %} disabled>Selecione uma coleção</option>
+                    {% for c in colecoes %}
+                    <option value="{{ c.nome }}" {% if c.nome==colecao %}selected{% endif %}>{{ c.nome }}</option>
+                    {% endfor %}
+                </select>
+
+                <h6 class="fw-bold text-uppercase small text-muted mb-2">Elementos</h6>
+                <select class="form-select" name="elemento" onchange="atualizarFiltros()">
+                    <option value="" {% if not elemento %}selected{% endif %} disabled>Selecione um elemento</option>
+                    {% for e in elementos %}
+                    <option value="{{ e.nome }}" {% if e.nome==elemento %}selected{% endif %}>{{ e.nome }}</option>
+                    {% endfor %}
+                </select>
+
+                <h6 class="fw-bold text-uppercase small text-muted mb-2">Artistas</h6>
+                <select class="form-select" name="artista" onchange="atualizarFiltros()">
+                    <option value="" {% if not artista %}selected{% endif %} disabled>Selecione um artista</option>
+                    {% for a in artistas %}
+                    <option value="{{ a.nome }}" {% if a.nome==artista %}selected{% endif %}>{{ a.nome }}</option>
+                    {% endfor %}
+                </select>
+
+                <button class="btn btn-outline-danger mt-3" onclick="aplicarFiltros()"> Aplicar Filtros </button>
             </div>
-            {% endfor %}
+        </div>
+        {% for carta in cartas %}
+        <div class="col-6 col-sm-4 col-md-3 col-lg-3">
+            <a href="/carta?id={{ carta.id }}" class="poke-card-link" title="{{ carta.nome }}">
+                <div class="card-image-wrapper">
+                    <img src="{{ carta.imagem }}" alt="{{ carta.nome }}" class="card-img-content" loading="lazy">
+                </div>
+                <div class="card-name">
+                    {{ carta.nome }}
+                </div>
+            </a>
+        </div>
+        {% endfor %}
 
         {% else %}
-            
-            <div class="col-12 empty-state">
-                <img src="/static/svg/pokeball.svg" alt="Pokebola vazia" style="width: 80px; opacity: 0.3; margin-bottom: 20px;">
-                <h3>Nenhuma carta encontrada.</h3>
-                <p>Tente buscar por outro termo ou explore nossas coleções.</p>
-                <a href="/" class="btn btn-outline-danger mt-3">Voltar para o Início</a>
-            </div>
+
+        <div class="col-12 empty-state">
+            <img src="/static/svg/pokeball.svg" alt="Pokebola vazia"
+                style="width: 80px; opacity: 0.3; margin-bottom: 20px;">
+            <h3>Nenhuma carta encontrada.</h3>
+            <p>Tente buscar por outro termo ou explore nossas coleções.</p>
+            <a href="/" class="btn btn-outline-danger mt-3">Voltar para o Início</a>
+        </div>
 
         {% endif %}
-        
+
     </div>
 </div>
+
+<script>
+    function atualizarFiltros() {
+        const colecao = document.querySelector('select[name="colecao"]').value;
+        const elemento = document.querySelector('select[name="elemento"]').value;
+        const artista = document.querySelector('select[name="artista"]').value;
+        const url = `/procurar?colecao=${colecao}&elemento=${elemento}&artista=${artista}`;
+        window.location.href = url;
+    }
+</script>
+
+<script>
+    function aplicarFiltros() {
+        const colecao = document.querySelector('select[name="colecao"]').value;
+        const elemento = document.querySelector('select[name="elemento"]').value;
+        const artista = document.querySelector('select[name="artista"]').value;
+        const url = `/procurar?colecao=${colecao}&elemento=${elemento}&artista=${artista}`;
+        window.location.href = url;
+    }
+</script>
 
 {% endblock %}
